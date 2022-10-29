@@ -63,8 +63,10 @@ func MutateProxySvc(gatewayProxy *v1.GatewayProxy, svc *corev1.Service) {
 	svc.Labels = map[string]string{
 		GatewayProxyCommonKey: "gatewayproxy",
 	}
+	oldClusterIp := svc.Spec.ClusterIP
 	svc.Spec = corev1.ServiceSpec{
-		Type: corev1.ServiceTypeNodePort,
+		ClusterIP: oldClusterIp,
+		Type:      corev1.ServiceTypeNodePort,
 		Selector: map[string]string{
 			GatewayProxyLableKey: gatewayProxy.Name,
 		},
